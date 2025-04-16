@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 public class FormSistema extends javax.swing.JFrame {
     // Cria a pilha principal que armazenará objetos Recorde (com capacidade inicial de 10)
     Pilha<Recorde> minhaPilha = new Pilha<>(10);
+    Pilha<Recorde> minhaDesempilhar = new Pilha<>(10);
 
     // Construtor do formulário: inicializa os componentes da interface (gerado pelo NetBeans geralmente)
     public FormSistema() {
@@ -42,7 +43,7 @@ public class FormSistema extends javax.swing.JFrame {
                 // Escreve os dados do recorde no arquivo no formato CSV
                 writer.write(recorde.getNome() + "," + recorde.getTempo() + "," + 
                     recorde.getDataRecorde().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                writer.newLine(); // pula linha
+                writer.newLine(); // pula linho elemento na pilha temporáriaa
                 Pilha.push(recorde); // guarda o elemento na pilha temporária
             }
             // Recoloca os elementos de volta na pilha original
@@ -88,10 +89,11 @@ public class FormSistema extends javax.swing.JFrame {
     }
     // Remove o topo da pilha principal e mostra na área auxiliar
     void desempilhar(Pilha<Recorde> j, JTextArea listAux) {
+        minhaDesempilhar.push(minhaPilha.pop());
         listAux.setText(""); // limpa a área de texto auxiliar
-        if (!minhaPilha.isEmpty())
-            listAux.append("\tTopo removido:\n" + minhaPilha.pop()); // mostra o elemento removido
-        else
+        if (!minhaDesempilhar.isEmpty()){
+            listAux.append("\tTopo removido:\n" + minhaDesempilhar.peek()); // mostra o elemento removido
+        }else
             listAux.append("\tPilha Vazia!"); // se a pilha estiver vazia
     }
     // Limpa os campos de entrada da interface (nome, tempo e data)
